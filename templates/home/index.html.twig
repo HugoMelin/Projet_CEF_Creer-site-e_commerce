@@ -1,20 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!{% endblock %}
+{% block title %}{{ controller_name }}{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for sweat in sweats %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ sweat.images.first.link }}" alt="{{ sweat.images.first.alt }}" width="201" class="mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ sweat.name }}</h5>
+                        <p class="card-text">{{ sweat.price }} €</p>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
-
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/Users/hugomelin/Documents/ProjetWeb/CEF/Projets/Site e-commerce/app/site_e-commerce/src/Controller/HomeController.php</code></li>
-        <li>Your template at <code>/Users/hugomelin/Documents/ProjetWeb/CEF/Projets/Site e-commerce/app/site_e-commerce/templates/home/index.html.twig</code></li>
-    </ul>
-</div>
+                        {% if app.user %}
+                            <div class="d-flex justify-content-end">
+                                <a href="#" class="btn btn-primary">Voir plus</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
