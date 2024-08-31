@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ controller_name }}{% endblock %}
+
+{% block body %}
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for sweat in sweats %}
+            <div class="col">
+                <div class="card h-100">
+                    <img src="{{ sweat.images.first.link }}" alt="{{ sweat.images.first.alt }}" width="201" class="mx-auto">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ sweat.name }}</h5>
+                        <p class="card-text">{{ sweat.price }} €</p>
+
+                        {% if app.user %}
+                            <div class="d-flex justify-content-end">
+                                <a href="#" class="btn btn-primary">Voir plus</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                  </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

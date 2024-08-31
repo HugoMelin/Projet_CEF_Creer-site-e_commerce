@@ -16,6 +16,20 @@ class SweatShirtRepository extends ServiceEntityRepository
         parent::__construct($registry, SweatShirt::class);
     }
 
+    /**
+     * Summary of showTop
+     * @return SweatShirt[]
+     */
+    public function showTop(): array
+    {
+
+        return $this->createQueryBuilder('r')
+        ->where('r.top = 1')
+        ->setMaxResults(3)
+        ->getQuery()
+        ->getResult();
+    }
+
 //    /**
 //     * @return SweatShirt[] Returns an array of SweatShirt objects
 //     */
