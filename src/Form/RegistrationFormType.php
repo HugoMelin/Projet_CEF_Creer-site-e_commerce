@@ -28,7 +28,8 @@ class RegistrationFormType extends AbstractType
                 'label'=> "Adresse mail"
             ])
             ->add('delivery_adress', TextareaType::class, [
-                'label'=> "Adresse de livraison"
+                'label'=> "Adresse de livraison",
+                'required'=> false
             ])
             ->add('agreeTerms', CheckboxType::class, [
                 'label'=> 'Termes d\'utilisation',

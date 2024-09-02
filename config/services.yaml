@@ -20,5 +20,7 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
+    Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface:
+        alias: 'App\Security\AppAuthenticator'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
