@@ -30,6 +30,25 @@ class SweatShirtRepository extends ServiceEntityRepository
         ->getResult();
     }
 
+    public function findWithPriceRange(array $prices): array
+    {
+        if ($prices && count($prices) == 2) {
+            $minPrice = min($prices);
+            $maxPrice = max($prices);
+
+            return $this->createQueryBuilder('r')
+                ->where('r.price >= :minPrice')
+                ->andWhere('r.price < :maxPrice')
+                ->orderBy('r.price', 'ASC')
+                ->setParameter('minPrice', $minPrice)
+                ->setParameter('maxPrice', $maxPrice)
+                ->getQuery()
+                ->getResult();
+        }
+
+        return $this->findAll();
+    }
+
 //    /**
 //     * @return SweatShirt[] Returns an array of SweatShirt objects
 //     */
