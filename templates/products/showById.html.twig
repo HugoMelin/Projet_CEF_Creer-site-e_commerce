@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boutique{% endblock %}
+
+{% block body %}
+    <div class="container border border-3">
+        <div class="row p-2">
+            <div class="col-6">
+                <div class="d-flex justify-content-center">
+                    <img src="{{ sweat.images.first.link }}" alt="{{ sweat.images.first.alt }}" width="201">
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="row">
+                    <h1>{{ sweat.name }}</h1>
+                </div>
+                <div class="row">
+                    <p>{{ sweat.price }} €</p>
+                </div>
+                <div class="row justify-content-end">
+                    <div class="w-auto">
+                        <form action="" method="post" class="d-flex gap-2 flex-column">
+                            <select class="rounded" name="size" id="size-select">
+                                <option value="">Taille</option>
+                                <option value="xs" {{ sweat.stockXs < 1 ? 'disabled' : ''}}>XS</option>
+                                <option value="s" {{ sweat.stockS < 1 ? 'disabled' : ''}}>S</option>
+                                <option value="m" {{ sweat.stockM < 1 ? 'disabled' : ''}}>M</option>
+                                <option value="l" {{ sweat.stockM < 1 ? 'disabled' : ''}}>L</option>
+                                <option value="xl" {{ sweat.stockXl < 1 ? 'disabled' : ''}}>XL</option>
+                            </select>
+                            <div>
+                                <button class="text-uppercase btn btn-primary" type="submit">Aujouter au panier</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

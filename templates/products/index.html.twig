@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Boutique{% endblock %}
+
+{% block body %}
+    <div class="container">
+            {{ form_start(form, {'attr': {'id': 'filter-form', 'class': 'mb-2'}}) }}
+            <div class="d-flex align-items-center gap-2">
+                {{ form_row(form.priceRange, {'label': false}) }}
+                <button type="submit" class="btn btn-outline-primary">Filtrer</button>
+            </div>    
+            {{ form_end(form) }}
+
+        <div id="products" class="row row-cols-1 row-cols-md-3 g-4">
+            {% for sweat in products %}
+                <div class="col">
+                    <div class="card h-100">
+                        <img src="{{ sweat.images.first.link }}" alt="{{ sweat.images.first.alt }}" width="201" class="mx-auto">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ sweat.name }}</h5>
+                            <p class="card-text">{{ sweat.price }} €</p>
+    
+                            {% if app.user %}
+                                <div class="d-flex justify-content-end">
+                                    <a href="{{ path('products.showById', {'id': sweat.id}) }}" class="btn btn-primary">Voir plus</a>
+                                </div>
+                            {% endif %}
+                        </div>
+                      </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {# Rechargement automatique de la page #}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const form = document.getElementById('filter-form');
+            form.addEventListener('change', function() {
+                this.submit();
+            });
+        });
+    </script>
+{% endblock %}

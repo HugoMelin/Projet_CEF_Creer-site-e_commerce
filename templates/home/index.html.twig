@@ -14,7 +14,7 @@
 
                         {% if app.user %}
                             <div class="d-flex justify-content-end">
-                                <a href="#" class="btn btn-primary">Voir plus</a>
+                                <a href="{{ path('products.showById', {'id': sweat.id}) }}" class="btn btn-primary">Voir plus</a>
                             </div>
                         {% endif %}
                     </div>
