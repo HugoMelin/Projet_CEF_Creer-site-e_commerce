@@ -25,4 +25,13 @@ class ProductsController extends AbstractController
             'products' => $products
         ]);
     }
+
+    #[Route('/product/{id}', name:'products.showById')]
+    public function showById(string $id, SweatShirtRepository $repository): Response
+    {
+        $sweat = $repository->findOneById($id);
+        return $this->render('products/showById.html.twig', [
+            'sweat'=> $sweat,
+        ]);
+    }
 }

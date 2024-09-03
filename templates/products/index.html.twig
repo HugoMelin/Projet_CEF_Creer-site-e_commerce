@@ -4,11 +4,14 @@
 
 {% block body %}
     <div class="container">
-        {{ form_start(form, {'attr': {'id': 'filter-form', 'class': 'mb-2'}}) }}
-            {{ form_row(form.priceRange, {'label': false}) }}
-        {{ form_end(form) }}
+            {{ form_start(form, {'attr': {'id': 'filter-form', 'class': 'mb-2'}}) }}
+            <div class="d-flex align-items-center gap-2">
+                {{ form_row(form.priceRange, {'label': false}) }}
+                <button type="submit" class="btn btn-outline-primary">Filtrer</button>
+            </div>    
+            {{ form_end(form) }}
 
-        <div class="row row-cols-1 row-cols-md-3 g-4">
+        <div id="products" class="row row-cols-1 row-cols-md-3 g-4">
             {% for sweat in products %}
                 <div class="col">
                     <div class="card h-100">
@@ -19,7 +22,7 @@
     
                             {% if app.user %}
                                 <div class="d-flex justify-content-end">
-                                    <a href="#" class="btn btn-primary">Voir plus</a>
+                                    <a href="{{ path('products.showById', {'id': sweat.id}) }}" class="btn btn-primary">Voir plus</a>
                                 </div>
                             {% endif %}
                         </div>
@@ -37,5 +40,5 @@
                 this.submit();
             });
         });
-</script>
+    </script>
 {% endblock %}
