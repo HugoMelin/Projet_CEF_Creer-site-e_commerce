@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Panier{% endblock %}
+
+{% block body %}
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success">
+        {{ message }}
+    </div>
+    {% endfor %}
+
+    {% for item in items %}
+        {% for size, quantity in item.option %}
+            <div class="container border border-2 my-3">
+                <div class="row align-items-center">
+                    <div class="col-3">
+                        <img src="{{ item.product.images.first.link }}" alt="{{ item.product.images.first.alt }}">
+                    </div>
+                    <div class="col">
+                        <div class="row">
+                            <div class="col">
+                                <p>{{ item.product.name }}</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ item.product.price }} €</p>
+                            </div>
+                            <div class="col">
+                                <p>{{ size|upper }} (Quantité: {{ quantity }})</p>
+                            </div>
+                        </div>
+                        <div class="row justify-content-end">
+                            <a href="{{ path('cart.remove', {'id': item.product.id, 'size': size}) }}" class="btn btn-primary w-25 me-5 text-uppercase">Retirer du panier</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="container my-3">
+            <p>Vous n'avez pas d'article dans votre panier.</p>
+        </div>
+    {% endfor %}
+    
+    {% if items|length > 0 %}
+        <div class="container">
+            <div class="col">
+                <a href="{{ path('cart.clear') }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir vider votre panier ?');">
+                    Vider le panier
+                </a>                    
+            </div>
+            <div class="row w-50 ms-auto">
+                <div class="col">
+                    <p class="border border-2 text-end pe-3">Total : {{ total }} €</p>
+                </div>
+                <div class="col">
+                    <a href="{{ path('cart.checkout') }}" class="btn btn-danger text-uppercase">Valider la commande</a>
+                    <a href="{{ path('products.index') }}" class="btn btn-success text-uppercase">Continuer mes achats</a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

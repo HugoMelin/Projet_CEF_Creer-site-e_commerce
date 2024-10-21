@@ -17,9 +17,9 @@
                 <div class="row">
                     <p>{{ sweat.price }} €</p>
                 </div>
-                <div class="row justify-content-end">
+                <div class="row justify-content-end container">
                     <div class="w-auto">
-                        <form action="" method="post" class="d-flex gap-2 flex-column">
+                        <form action="" method="post" class="d-flex gap-2 flex-column" id="size-form">
                             <select class="rounded" name="size" id="size-select">
                                 <option value="">Taille</option>
                                 <option value="xs" {{ sweat.stockXs < 1 ? 'disabled' : ''}}>XS</option>
@@ -29,7 +29,7 @@
                                 <option value="xl" {{ sweat.stockXl < 1 ? 'disabled' : ''}}>XL</option>
                             </select>
                             <div>
-                                <button class="text-uppercase btn btn-primary" type="submit">Aujouter au panier</button>
+                                <button class="text-uppercase btn btn-primary">Aujouter au panier</button>
                             </div>
                         </form>
                     </div>
@@ -37,4 +37,12 @@
             </div>
         </div>
     </div>
+
+    <script>
+        const form = document.getElementById('size-form');
+        form.addEventListener("submit", function(e) {
+            var data = document.getElementById('size-select')
+            window.location.href = '/cart/add/{{sweat.id}}-'+data.value
+        })
+    </script>
 {% endblock %}
