@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{% if sweatshirt is defined %}Modifier{% else %}Ajouter{% endif %} un sweat-shirt{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>{% if sweatshirt is defined %}Modifier{% else %}Ajouter{% endif %} un sweat-shirt</h1>
+    {{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.price) }}
+    {{ form_row(form.top) }}
+    {{ form_row(form.image) }}
+    {{ form_row(form.size) }}
+    {{ form_row(form.stock_xs) }}
+    {{ form_row(form.stock_s) }}
+    {{ form_row(form.stock_m) }}
+    {{ form_row(form.stock_l) }}
+    {{ form_row(form.stock_xl) }}
+    <button type="submit" class="btn btn-primary">Enregistrer</button>
+    {{ form_end(form) }}
+</div>
+{% endblock %}
