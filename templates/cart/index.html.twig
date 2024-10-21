@@ -2,6 +2,62 @@
 
 {% block title %}Panier{% endblock %}
 
+{% block javascripts %}
+    <script src="https://js.stripe.com/v3/"></script>
+    <script>
+        const stripe = Stripe('{{ stripe_public_key }}');
+        const processPaymentUrl = "{{ path('cart.process_payment') }}";
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const checkoutButton = document.getElementById('checkout-button');
+            checkoutButton.addEventListener('click', function() {
+                // Désactiver le bouton pendant le traitement
+                this.disabled = true;
+                
+                fetch(processPaymentUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    }
+                })
+                .then(function(response) {
+                    if (!response.ok) {
+                        throw new Error('Erreur réseau: ' + response.status);
+                    }
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        return response.json();
+                    } else {
+                        return response.text().then(text => {
+                            console.error('Réponse non-JSON reçue:', text);
+                            throw new Error('Réponse inattendue du serveur');
+                        });
+                    }
+                })
+                .then(function(session) {
+                    if (!session.id) {
+                        throw new Error('ID de session manquant dans la réponse');
+                    }
+                    return stripe.redirectToCheckout({ sessionId: session.id });
+                })
+                .then(function(result) {
+                    if (result.error) {
+                        throw new Error(result.error.message);
+                    }
+                })
+                .catch(function(error) {
+                    console.error('Erreur:', error);
+                    alert('Une erreur est survenue lors du traitement de votre paiement: ' + error.message);
+                })
+                .finally(function() {
+                    checkoutButton.disabled = false;
+                });
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block body %}
     {% for message in app.flashes('success') %}
     <div class="alert alert-success">
@@ -53,7 +109,7 @@
                     <p class="border border-2 text-end pe-3">Total : {{ total }} €</p>
                 </div>
                 <div class="col">
-                    <a href="{{ path('cart.checkout') }}" class="btn btn-danger text-uppercase">Valider la commande</a>
+                    <button id="checkout-button" class="btn btn-primary w-100">Payer</button>
                     <a href="{{ path('products.index') }}" class="btn btn-success text-uppercase">Continuer mes achats</a>
                 </div>
             </div>
