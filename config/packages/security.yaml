@@ -9,6 +9,7 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+        # used to reload user from session & other features (e.g. switch_user)
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -44,6 +45,7 @@ security:
         - { path: ^/products, roles: ROLE_USER }
         - { path: ^/product, roles: ROLE_USER }
         - { path: ^/cart, roles: ROLE_USER }
+        - { path: ^/admin, roles: ROLE_ADMIN }
 
 when@test:
     security:

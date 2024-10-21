@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block body %}
+<div class="container mt-4">
+    <h1>Back-Office</h1>
+    <a href="{{ path('admin_sweatshirt_new') }}" class="btn btn-primary mb-3">Ajouter un sweat-shirt</a>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Nom</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sweatshirt in sweatshirts %}
+            <tr>
+                <td>{{ sweatshirt.id }}</td>
+                <td>
+                    {% if sweatshirt.images.first %}
+                        <img src="{{ asset(sweatshirt.images.first.link) }}" alt="{{ sweatshirt.images.first.alt }}" style="width: 50px; height: auto;">
+                    {% else %}
+                        Pas d'image
+                    {% endif %}
+                </td>
+                <td>{{ sweatshirt.name }}</td>
+                <td>{{ sweatshirt.price }}</td>
+                <td>
+                    <a href="{{ path('products.showById', {'id': sweatshirt.id}) }}" class="btn btn-sm btn-info">Voir</a>
+                    <a href="{{ path('admin_sweatshirt_edit', {'id': sweatshirt.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                    <form action="{{ path('admin_sweatshirt_delete', {'id': sweatshirt.id}) }}" method="post" style="display: inline-block">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ sweatshirt.id) }}">
+                        <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer ce sweat-shirt ?')">Supprimer</button>
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
