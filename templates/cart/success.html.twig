@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement Réussi{% endblock %}
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card border-success">
+                <div class="card-header bg-success text-white">
+                    <h4 class="mb-0">Paiement Réussi</h4>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-success" role="alert">
+                        <h4 class="alert-heading">Merci pour votre achat !</h4>
+                        <p>Votre paiement a été traité avec succès. Votre commande est maintenant confirmée.</p>
+                    </div>
+                    <div class="text-center mt-4">
+                        <a href="{{ path('products.index') }}" class="btn btn-primary">Continuer vos achats</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

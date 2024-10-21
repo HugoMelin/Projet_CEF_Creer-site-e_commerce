@@ -10,8 +10,8 @@
         {% block stylesheets %}
         {% endblock %}
 
+        {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% block javascripts %}
-            {% block importmap %}{{ importmap('app') }}{% endblock %}
         {% endblock %}
     </head>
     <body class="bg-white">

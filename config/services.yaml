@@ -24,3 +24,7 @@ services:
         alias: 'App\Security\AppAuthenticator'
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    Stripe\StripeClient:
+        class: Stripe\StripeClient
+        arguments:
+            - '%env(STRIPE_SECRET_KEY_TEST)%'

@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiement annulé{% endblock %}
+
+{% block body %}
+  <div class="container mt-5">
+      <div class="row justify-content-center">
+          <div class="col-md-8">
+              <div class="card border-danger">
+                  <div class="card-header bg-danger text-white">
+                      <h4 class="mb-0">Paiement Annulé</h4>
+                  </div>
+                  <div class="card-body">
+                      <div class="alert alert-danger" role="alert">
+                          <h4 class="alert-heading">Oops !</h4>
+                          <p>Votre paiement a été annulé ou n'a pas pu être traité.</p>
+                          <hr>
+                          <p class="mb-0">Si vous avez rencontré des problèmes lors du paiement, n'hésitez pas à réessayer ou à nous contacter pour obtenir de l'aide.</p>
+                      </div>
+                      <div class="text-center mt-4">
+                          <a href="{{ path('cart.index') }}" class="btn btn-primary">Retourner au panier</a>
+                          <a href="{{ path('products.index') }}" class="btn btn-secondary">Continuer vos achats</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+{% endblock %}
