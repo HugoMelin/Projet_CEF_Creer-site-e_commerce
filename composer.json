@@ -81,11 +81,14 @@
             "assets:install %PUBLIC_DIR%": "symfony-cmd",
             "importmap:install": "symfony-cmd"
         },
+        "test": "phpunit",
         "post-install-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@test"
         ],
         "post-update-cmd": [
-            "@auto-scripts"
+            "@auto-scripts",
+            "@test"
         ]
     },
     "conflict": {

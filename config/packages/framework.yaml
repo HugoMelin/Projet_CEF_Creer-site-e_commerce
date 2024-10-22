@@ -6,6 +6,10 @@ framework:
     # Note that the session will be started ONLY if you read or write from it.
     session: true
 
+    messenger:
+        transports:
+            async: 'in-memory://'
+
     #esi: true
     #fragments: true
 
