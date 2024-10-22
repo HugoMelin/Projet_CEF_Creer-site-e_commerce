@@ -15,10 +15,22 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 use Symfony\Component\String\Slugger\SluggerInterface;
 
+/**
+ * AdminController handles all admin-related operations for sweatshirts.
+ * 
+ * This controller is responsible for managing the CRUD operations
+ * for sweatshirts in the admin panel.
+ */
 #[Route('/admin')]
 #[IsGranted('ROLE_ADMIN')]
 class AdminController extends AbstractController
 {
+    /**
+     * Displays the admin dashboard with a list of all sweatshirts.
+     *
+     * @param SweatShirtRepository $repository The repository to fetch sweatshirts
+     * @return Response A response instance with the rendered view
+     */
     #[Route('/', name: 'admin_dashboard')]
     public function index(SweatShirtRepository $repository): Response
     {
@@ -28,6 +40,17 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+     * Handles the creation of a new sweatshirt.
+     *
+     * This method processes the form submission for creating a new sweatshirt,
+     * including handling file uploads for the sweatshirt image.
+     *
+     * @param Request $request The current request
+     * @param EntityManagerInterface $entityManager The entity manager
+     * @param SluggerInterface $slugger The slugger service for filename sanitization
+     * @return Response A response instance with either the form view or a redirect
+     */
     #[Route('/sweatshirt/new', name: 'admin_sweatshirt_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -72,6 +95,18 @@ class AdminController extends AbstractController
         ]);
     }
     
+    /**
+     * Handles the editing of an existing sweatshirt.
+     *
+     * This method processes the form submission for editing a sweatshirt,
+     * including handling file uploads for updating the sweatshirt image.
+     *
+     * @param Request $request The current request
+     * @param SweatShirt $sweatshirt The sweatshirt entity to edit
+     * @param EntityManagerInterface $entityManager The entity manager
+     * @param SluggerInterface $slugger The slugger service for filename sanitization
+     * @return Response A response instance with either the form view or a redirect
+     */
     #[Route('/sweatshirt/{id}/edit', name: 'admin_sweatshirt_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, SweatShirt $sweatshirt, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
@@ -127,6 +162,17 @@ class AdminController extends AbstractController
         ]);
     }
 
+    /**
+     * Handles the deletion of a sweatshirt.
+     *
+     * This method processes the deletion of a sweatshirt and its associated images,
+     * both from the database and the file system.
+     *
+     * @param Request $request The current request
+     * @param SweatShirt $sweatshirt The sweatshirt entity to delete
+     * @param EntityManagerInterface $entityManager The entity manager
+     * @return Response A redirect response to the admin dashboard
+     */
     #[Route('/sweatshirt/{id}/delete', name: 'admin_sweatshirt_delete', methods: ['POST'])]
     public function delete(Request $request, SweatShirt $sweatshirt, EntityManagerInterface $entityManager): Response
     {

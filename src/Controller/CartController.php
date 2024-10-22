@@ -12,18 +12,37 @@ use Stripe\StripeClient;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
+/**
+ * CartController handles all cart-related operations.
+ * 
+ * This controller is responsible for managing the shopping cart,
+ * including adding/removing items, checkout process, and payment processing.
+*/
 #[Route('/cart', name:'cart.')]
 class CartController extends AbstractController
 {
     private $stripe;
     private $repository;
 
+    /**
+     * CartController constructor.
+     *
+     * @param StripeClient $stripe The Stripe client for payment processing
+     * @param SweatShirtRepository $repository The repository for SweatShirt entities
+     */
     public function __construct(StripeClient $stripe, SweatShirtRepository $repository)
     {
         $this->stripe = $stripe;
         $this->repository = $repository;
     }
 
+    /**
+     * Displays the cart contents.
+     *
+     * @param SessionInterface $session The session interface
+     * @param SweatShirtRepository $repository The SweatShirt repository
+     * @return Response A response instance with the rendered cart view
+     */
     #[Route(path:'/', name:'index')]
     public function index(SessionInterface $session, SweatShirtRepository $repository): Response
     {
@@ -38,6 +57,14 @@ class CartController extends AbstractController
         ]);
     }
 
+    /**
+     * Adds a sweatshirt to the cart.
+     *
+     * @param SweatShirt $sweatShirt The sweatshirt to add
+     * @param SessionInterface $session The session interface
+     * @param string $size The size of the sweatshirt
+     * @return Response A redirect response to the cart index
+     */
     #[Route(path:'/add/{id}-{size}', name:'add')]
     public function add(SweatShirt $sweatShirt, SessionInterface $session, $size): Response
     {
@@ -56,6 +83,14 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart.index');
     }
 
+    /**
+     * Removes a sweatshirt from the cart.
+     *
+     * @param int $id The ID of the sweatshirt to remove
+     * @param string $size The size of the sweatshirt to remove
+     * @param SessionInterface $session The session interface
+     * @return Response A redirect response to the cart index
+     */
     #[Route(path:'/remove/{id}-{size}', name:'remove')]
     public function remove($id, $size, SessionInterface $session): Response
     {
@@ -81,6 +116,12 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart.index');
     }
 
+    /**
+     * Clears the entire cart.
+     *
+     * @param SessionInterface $session The session interface
+     * @return Response A redirect response to the cart index
+     */
     #[Route(path:'/clear', name:'clear')]
     public function clear(SessionInterface $session): Response
     {
@@ -94,12 +135,15 @@ class CartController extends AbstractController
         return $this->redirectToRoute('cart.index');
     }
 
+    /**
+     * Handles the checkout process.
+     *
+     * @param SessionInterface $session The session interface
+     * @return Response A response instance with the checkout confirmation
+     */
     #[Route(path:'/checkout', name:'checkout')]
     public function checkout(SessionInterface $session): Response
     {
-        // Ici, vous pouvez ajouter la logique pour valider et régler la commande
-        // Par exemple, créer une entité Order, la sauvegarder en base de données, etc.
-
         // Une fois la commande traitée, videz le panier
         $session->remove('cart');
 
@@ -108,6 +152,12 @@ class CartController extends AbstractController
         ]);
     }
 
+    /**
+     * Processes the payment using Stripe.
+     *
+     * @param SessionInterface $session The session interface
+     * @return JsonResponse A JSON response with the Stripe session ID or error message
+     */
     #[Route('/process-payment', name: 'process_payment', methods: ['POST'])]
     public function processPayment(SessionInterface $session): JsonResponse
     {
@@ -138,6 +188,12 @@ class CartController extends AbstractController
         }
     }
 
+    /**
+     * Handles successful payment.
+     *
+     * @param SessionInterface $session The session interface
+     * @return Response A response instance with the success message
+     */
     #[Route('/success', name: 'success')]
     public function success(SessionInterface $session): Response
     {
@@ -145,12 +201,23 @@ class CartController extends AbstractController
         return $this->render('cart/success.html.twig');
     }
 
+    /**
+     * Handles cancelled payment.
+     *
+     * @return Response A response instance with the cancellation message
+     */
     #[Route('/cancel', name: 'cancel')]
     public function cancel(): Response
     {
         return $this->render('cart/cancel.html.twig');
     }
 
+    /**
+     * Calculates the total price of items in the cart.
+     *
+     * @param array $cart The cart array from the session
+     * @return float The total price of all items in the cart
+     */
     private function calculateTotal(array $cart): float
     {
         $total = 0;
@@ -163,6 +230,12 @@ class CartController extends AbstractController
         return $total;
     }
 
+    /**
+     * Prepares the cart data for display.
+     *
+     * @param array $cart The cart array from the session
+     * @return array An array of prepared cart data
+     */
     private function prepareCartData(array $cart): array
     {
         $data = [];

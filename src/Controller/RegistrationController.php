@@ -20,12 +20,31 @@ use Symfony\Component\Security\Http\Authenticator\AuthenticatorInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 
+/**
+ * RegistrationController handles user registration and email verification.
+ */
 class RegistrationController extends AbstractController
 {
+    /**
+     * Constructor for RegistrationController.
+     *
+     * @param EmailVerifier $emailVerifier Service for handling email verification
+     */
     public function __construct(private EmailVerifier $emailVerifier)
     {
     }
 
+    /**
+     * Handles user registration process.
+     *
+     * This method creates a new user, processes the registration form,
+     * and sends a confirmation email.
+     *
+     * @param Request $request Current request
+     * @param UserPasswordHasherInterface $userPasswordHasher Password hashing service
+     * @param EntityManagerInterface $entityManager Doctrine entity manager
+     * @return Response Rendered registration form or redirect response
+     */
     #[Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -64,6 +83,19 @@ class RegistrationController extends AbstractController
         ]);
     }
 
+    /**
+     * Verifies user email and authenticates the user.
+     *
+     * This method handles the email verification process, marks the user as verified,
+     * and logs them in if successful.
+     *
+     * @param Request $request Current request
+     * @param TranslatorInterface $translator Translation service
+     * @param UserRepository $userRepository Repository for User entities
+     * @param UserAuthenticatorInterface $userAuthenticator User authentication service
+     * @param AuthenticatorInterface $authenticator Authenticator for user login
+     * @return Response Redirect response based on verification result
+     */
     #[Route('/verify/email', name: 'app_verify_email')]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator, UserRepository $userRepository, UserAuthenticatorInterface $userAuthenticator, AuthenticatorInterface $authenticator): Response
     {
