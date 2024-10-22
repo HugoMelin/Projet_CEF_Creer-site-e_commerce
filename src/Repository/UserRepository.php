@@ -10,10 +10,21 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
 
 /**
+ * UserRepository
+ *
+ * This repository is responsible for managing User entities.
+ * It extends ServiceEntityRepository to provide common database operations
+ * and implements PasswordUpgraderInterface for password upgrade functionality.
+ *
  * @extends ServiceEntityRepository<User>
  */
 class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
 {
+    /**
+     * Constructor for UserRepository.
+     *
+     * @param ManagerRegistry $registry The Doctrine registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
@@ -21,6 +32,13 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
 
     /**
      * Used to upgrade (rehash) the user's password automatically over time.
+     *
+     * This method is used by Symfony's security system to upgrade password hashes
+     * when needed, for example, when the hashing algorithm changes.
+     *
+     * @param PasswordAuthenticatedUserInterface $user The user whose password needs to be upgraded
+     * @param string $newHashedPassword The new hashed password
+     * @throws UnsupportedUserException If the user is not an instance of the User entity
      */
     public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
     {
@@ -33,28 +51,47 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
         $this->getEntityManager()->flush();
     }
 
-//    /**
-//     * @return User[] Returns an array of User objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('u.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Find users by a specific field.
+     *
+     * This is an example method showing how to create a custom query.
+     * It's currently commented out and can be uncommented and modified as needed.
+     *
+     * @param mixed $value The value to search for
+     * @return User[] Returns an array of User objects
+     */
+    /*
+    public function findByExampleField($value): array
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.exampleField = :val')
+            ->setParameter('val', $value)
+            ->orderBy('u.id', 'ASC')
+            ->setMaxResults(10)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+    */
 
-//    public function findOneBySomeField($value): ?User
-//    {
-//        return $this->createQueryBuilder('u')
-//            ->andWhere('u.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    /**
+     * Find a single user by a specific field.
+     *
+     * This is another example method for finding a single User entity.
+     * It's currently commented out and can be uncommented and modified as needed.
+     *
+     * @param mixed $value The value to search for
+     * @return User|null Returns a User object or null if not found
+     */
+    /*
+    public function findOneBySomeField($value): ?User
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.exampleField = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
+    */
 }
